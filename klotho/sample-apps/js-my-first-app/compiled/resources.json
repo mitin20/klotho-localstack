@@ -1,0 +1,219 @@
+[
+  {
+    "Name": "InternalKlothoPayloads"
+  },
+  {
+    "Files": [
+      "package.json",
+      "klotho_runtime/fs_payload.js",
+      "klotho_runtime/clients.js",
+      "Dockerfile",
+      "klotho_runtime/dispatcher.js",
+      "klotho_runtime/keyvalue.js",
+      "index.js"
+    ],
+    "Name": "main",
+    "Type": "exec_unit"
+  },
+  {
+    "Name": "pet-api",
+    "Routes": [
+      {
+        "Path": "/pets",
+        "ExecUnitName": "main",
+        "Verb": "get",
+        "HandledInFile": "index.js"
+      },
+      {
+        "Path": "/pets",
+        "ExecUnitName": "main",
+        "Verb": "post",
+        "HandledInFile": "index.js"
+      }
+    ],
+    "DefinedIn": "index.js",
+    "ExportVarName": "app"
+  },
+  {
+    "Name": "petsByOwner",
+    "Kind": "persist_kv"
+  },
+  {
+    "Name": "my-first-app"
+  },
+  {
+    "ConfigPath": "klotho.yaml",
+    "HasKV": true,
+    "Secrets": null,
+    "ORMs": null,
+    "Redis": null,
+    "PubSubs": null,
+    "ExecUnits": [
+      {
+        "Name": "main",
+        "Type": "lambda",
+        "MemReqMB": 0,
+        "KeepWarm": false,
+        "NetworkPlacement": "private",
+        "Schedules": null,
+        "HelmOptions": {},
+        "Params": {
+          "memorySize": 512,
+          "timeout": 180
+        },
+        "EnvironmentVariables": [
+          {
+            "Name": "KLOTHO_PROXY_RESOURCE_NAME",
+            "Kind": "internal",
+            "ResourceID": "InternalKlothoPayloads",
+            "Value": "bucket_name"
+          }
+        ],
+        "DockerfilePath": "Dockerfile"
+      }
+    ],
+    "HelmCharts": null,
+    "StaticUnits": null,
+    "Gateways": null,
+    "Topology": {
+      "topologyIconData": [
+        {
+          "id": "petsByOwner_persist_kv",
+          "title": "petsByOwner",
+          "image": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/database/dynamodb.png",
+          "kind": "persist_kv",
+          "type": "dynamodb"
+        },
+        {
+          "id": "InternalKlothoPayloads_internal",
+          "title": "InternalKlothoPayloads",
+          "image": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/generic/blank/blank.png",
+          "kind": "internal",
+          "type": ""
+        },
+        {
+          "id": "main_exec_unit",
+          "title": "main",
+          "image": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/compute/lambda.png",
+          "kind": "exec_unit",
+          "type": "lambda"
+        },
+        {
+          "id": "pet-api_gateway",
+          "title": "pet-api",
+          "image": "https://raw.githubusercontent.com/mingrammer/diagrams/master/resources/aws/network/api-gateway.png",
+          "kind": "gateway",
+          "type": "apigateway"
+        }
+      ],
+      "topologyEdgeData": [
+        {
+          "source": "main_exec_unit",
+          "target": "petsByOwner_persist_kv"
+        },
+        {
+          "source": "pet-api_gateway",
+          "target": "main_exec_unit"
+        }
+      ]
+    },
+    "Results": {},
+    "Datadog": false,
+    "Lumigo": false,
+    "AppName": "my-first-app",
+    "PayloadsBucketName": "",
+    "UseVPC": false,
+    "CloudfrontDistributions": null,
+    "APIGateways": [
+      {
+        "Name": "pet-api",
+        "Routes": [
+          {
+            "execUnitName": "main",
+            "path": "/pets",
+            "verb": "get"
+          },
+          {
+            "execUnitName": "main",
+            "path": "/pets",
+            "verb": "post"
+          }
+        ],
+        "ApiType": "REST"
+      }
+    ],
+    "ALBs": null,
+    "Buckets": [
+      {
+        "Name": "InternalKlothoPayloads",
+        "Type": "",
+        "Params": null
+      }
+    ],
+    "SecretManagerSecrets": null,
+    "RdsInstances": null
+  },
+  {
+    "Files": [
+      "iac/k8s/helm_chart.ts",
+      "iac/k8s/add_ons/cloud_map_controller/cloudmap_export_service.yaml",
+      "iac/k8s/add_ons/index.ts",
+      "iac/sanitization/aws/ec2.ts",
+      "iac/sanitization/aws/memorydb.ts",
+      "iac/sanitization/aws/secrets_manager.ts",
+      "index.ts",
+      "tsconfig.json",
+      "iac/eks.ts",
+      "iac/kubernetes.ts",
+      "iac/k8s/add_ons/alb_controller/target_group_binding.yaml",
+      "iac/k8s/add_ons/alb_controller/index.ts",
+      "iac/sanitization/aws/dynamodb.ts",
+      "deploylib.ts",
+      "iac/memorydb.ts",
+      "iac/load_balancing.ts",
+      "iac/sanitization/aws/cloud_watch.ts",
+      "iac/sanitization/aws/sns.ts",
+      "klotho.yaml",
+      "iac/elasticache.ts",
+      "iac/sanitization/aws/elasticache.ts",
+      "iac/sanitization/aws/index.ts",
+      "package.json",
+      "iac/sanitization/aws/common.ts",
+      "iac/sanitization/aws/eks.ts",
+      "iac/sanitization/aws/rds.ts",
+      "Pulumi.my-first-app.yaml",
+      "iac/cockroachdb.ts",
+      "iac/k8s/add_ons/external_dns/index.ts",
+      "iac/sanitization/sanitizer.ts",
+      "iac/sanitization/aws/elb.ts",
+      "iac/sanitization/aws/iam.ts",
+      "iac/analytics.ts",
+      "iac/k8s/horizontal-pod-autoscaling.ts",
+      "iac/sanitization/aws/ecs.ts",
+      "iac/sanitization/aws/lambda.ts",
+      "iac/sanitization/aws/s3.ts",
+      "iac/sanitization/aws/service_discovery.ts",
+      "Pulumi.yaml",
+      "iac/api_gateway.ts",
+      "iac/k8s/add_ons/cloud_map_controller/index.ts",
+      "iac/sanitization/aws/app_runner.ts",
+      "iac/sanitization/aws/eventbridge.ts",
+      "iac/k8s/add_ons/metrics_server/index.ts",
+      "iac/k8s/add_ons/cloud_map_controller/cloudmap_cluster_set.yaml"
+    ],
+    "Name": "Pulumi (AWS)",
+    "Type": "infra_as_code"
+  },
+  {
+    "Files": [
+      "package-lock.json",
+      "package.json",
+      "README.md",
+      "index.js"
+    ],
+    "Type": "input_files"
+  },
+  {
+    "index.js": {}
+  }
+]
